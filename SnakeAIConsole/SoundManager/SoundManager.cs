@@ -8,12 +8,14 @@ public class SoundManager : ThreadedManager
     private SoundPlayer? _onKill;
     private SoundPlayer? _onEat;
     private int _lastLength = 0;
-    public SoundManager(Game game)
+    public SoundManager(SnakeAiConfiguration configuration)
     {
-        Game = game;
+        Configuration = configuration;
     }
 
-    public Game Game { get; }
+    public SnakeAiConfiguration Configuration { get; }
+
+    public Game Game => Configuration.Game;
 
     protected override void Setup()
     {

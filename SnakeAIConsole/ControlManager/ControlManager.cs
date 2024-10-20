@@ -4,14 +4,15 @@ namespace SnakeAIConsole;
 
 public class ControlManager : ThreadedManager {
 
-    public ControlManager(Game game, ConsoleManager console) {
-        Game = game;
-        ConsoleManager = console;
+    public ControlManager(SnakeAiConfiguration configuration) {
+        Configuration = configuration;
     }
 
-    public Game Game { get; private set; }
+    public SnakeAiConfiguration Configuration { get; }
 
-    public ConsoleManager ConsoleManager { get; }
+    public Game Game => Configuration.Game;
+
+    public ConsoleManager ConsoleManager => Configuration.Console;
 
     protected override void Setup() {
     }

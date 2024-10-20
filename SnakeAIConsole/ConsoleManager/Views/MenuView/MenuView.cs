@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SnakeAICore;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,91 +7,79 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
-namespace SnakeAIConsole {
-    public class MenuView : ConsoleArea {
+namespace SnakeAIConsole;
 
-        private const int PADDING = 2;
-        private readonly ConsoleManager _consoleManager;
-        private List<MenuViewItem> _items = new List<MenuViewItem>();
-        private int _selectedIndex = 0;
-        private int _currentLine = 0;
+public class MenuView : ConsoleArea
+{
 
-        public MenuView(ConsoleManager consoleManager, Point topLeft, Size size) : base(topLeft, size) {
+    private List<MenuViewItem> _items = new List<MenuViewItem>();
+    private int _selectedIndex = 0;
 
-            FillBackground(Theme.MenuItem);
-            _consoleManager = consoleManager;
+    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 11))
+    {
 
-            Write(0, 0, Theme.MenuItem, new string(' ', size.Width));
-            _currentLine += 2;
-            AddMenuViewItem("Schneller", ActionSchneller);
-            AddMenuViewItem("Langsamer", ActionLangsamer);
-            _currentLine += 2;
-            AddMenuViewItem("Füge Futter hinzu", ActionFutterAdd);
-            AddMenuViewItem("Entferne Futter", ActionFutterRemove);
-            _currentLine += 2;
-            AddMenuViewItem("Beende", ActionBeende);
+        Configuration = configuration;
+        FillBackground(Theme.MenuItem);
 
-            SelectedItem = _items.First();
+        Write(0, 1, Theme.MenuItem, new string(' ', width / 2 - 2) + "MENÜ");
+
+        _items.Add(new MenuViewItem(3, this, "Schneller", ActionSchneller));
+        _items.Add(new MenuViewItem(4, this, "Langsamer", ActionLangsamer));
+
+        _items.Add(new MenuViewItem(6, this, "Füge Futter hinzu", ActionFutterAdd));
+        _items.Add(new MenuViewItem(7, this, "Entferne Futter", ActionFutterRemove));
+
+        _items.Add(new MenuViewItem(9, this, "Beende", ActionBeende));
+
+        SelectedItem = _items.First();
+        SelectedItem.IsSelected = true;
+    }
+
+    public MenuViewItem SelectedItem { get; private set; }
+
+    public SnakeAiConfiguration Configuration { get; }
+
+    public Game Game => Configuration.Game;
+
+    public override void Refresh()
+    {
+        SetSelectedItem();
+        foreach (var item in _items) item.Refresh();
+        base.Refresh();
+    }
+
+    public void MoveUp()
+    {
+        _selectedIndex--;
+        if (_selectedIndex < 0) _selectedIndex = 0;
+    }
+
+    public void MoveDown()
+    {
+
+        _selectedIndex++;
+        if (_selectedIndex >= _items.Count) _selectedIndex = _items.Count - 1;
+    }
+
+
+    private void SetSelectedItem()
+    {
+        var idx = _selectedIndex;
+        if (SelectedItem != _items[idx])
+        {
+            SelectedItem.IsSelected = false;
+            SelectedItem = _items[idx];
             SelectedItem.IsSelected = true;
         }
-
-        public MenuViewItem SelectedItem { get; private set; }
-
-        public override void Refresh() {
-            SetSelectedItem();
-            foreach (var item in _items) item.Refresh();
-            base.Refresh();
-        }
-
-        public void MoveUp() {
-            _selectedIndex--;
-            if (_selectedIndex < 0) _selectedIndex = 0;
-        }
-
-        public void MoveDown() {
-
-            _selectedIndex++;
-            if (_selectedIndex >= _items.Count) _selectedIndex = _items.Count - 1;
-        }
-
-
-        private void SetSelectedItem() {
-            var idx = _selectedIndex;
-            if (SelectedItem != _items[idx]) {
-                SelectedItem.IsSelected = false;
-                SelectedItem = _items[idx];
-                SelectedItem.IsSelected = true;
-            }
-        }
-
-        private void AddMenuViewItem(string text, Action action) {
-            if (action == null) action = () => { };
-
-            int maxTextLength = Size.Width - 2 * PADDING;
-            if (text.Length > Size.Width - 2 * PADDING) {
-                text = text.Substring(0, maxTextLength);
-            } else {
-                text += new string(' ', maxTextLength - text.Length);
-            }
-
-            text = $"  {text}  ";
-
-            var item = new MenuViewItem(
-                displayText: text,
-                line: _currentLine,
-                view: this,
-                action: action);
-
-            _currentLine++;
-            _items.Add(item);
-        }
-
-        private void ActionSchneller() { _consoleManager.Game.FramesPerSecond += _consoleManager.Game.FramesPerSecond < 100 ?  5 : 0; }
-        private void ActionLangsamer() { _consoleManager.Game.FramesPerSecond -= _consoleManager.Game.FramesPerSecond > 5 ? 5 : 0; }
-
-        private void ActionFutterAdd() { _consoleManager.Game.SetFoodCount(_consoleManager.Game.Food.Count() + 1); }
-        private void ActionFutterRemove() { _consoleManager.Game.SetFoodCount(_consoleManager.Game.Food.Count() - 1); }
-
-        private void ActionBeende() { _consoleManager.RaiseOnProgramStop(); }
     }
+
+    private void ActionSchneller() { Game.FramesPerSecond += Game.FramesPerSecond < 100 ? 5 : 0; }
+
+    private void ActionLangsamer() { Game.FramesPerSecond -= Game.FramesPerSecond > 5 ? 5 : 0; }
+
+    private void ActionFutterAdd() { Game.SetFoodCount(Game.FoodCount + 1); }
+
+    private void ActionFutterRemove() { Game.SetFoodCount(Game.FoodCount - 1); }
+
+    private void ActionBeende() { Configuration.Stop(); }
 }

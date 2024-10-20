@@ -469,6 +469,7 @@ Zuerst aufgeführte Items haben höhere Priorität. Elemente unterhalb der doppe
 |&#x2611;| 1 | SOUND | Füge Sounds hizu, wenn die Schlange etwas isst oder stirbt
 |&#x2611;| 1 | CONSOLE | Ändere die Font programatisch
 |&#x2611;| 1 | CONSOLE | Die Game-Information soll an anderer Stelle dargestellt werden. Verbessere auch die benutzten Farben (für visuell angenehmeres Ergebnis)
+|&#x2611;| 1 | CONSOLE | Das Program kann beendet werden
 |
 |&#x2610;| | AI | Erstelle Konzept für A.I.
 |&#x2610;| | GAME | Erstelle StorableData und die Settings-Klasse mit Highscore. Erstelle View für Highscore
@@ -538,8 +539,38 @@ Folgende Beobachtungen wurden gemacht:
 - Beim lesen wird immer die gesamte Collection kopiert, da wir die Daten für einen späteren Vergleich benötigen.
 - Vor dem Lesen wird immer abgefragt, ob 
 
-#### Lösung/Änderung:
-Implementieren einer neuen SyncQueue\<T\>-Klasse, welche von der 
+#### Lösung/Änderung: 
+Implementieren einer neuen SyncQueue\<T\>-Klasse, welche die Queue\<T\> wrapt
+
+#### Anmerkung:
+<span style="color:red">Eine erste Umsetzung brachte keine wesentlichen Verbesserungen, deswegen wurde dieses Vorhaben nach hinten verschoben</span>
+
+## SnakeAI Main-Klasse und Beenden des Programs
+#### Problembeschreibung:
+Es wurden mehrere Top-Level Komponenten (SoundManager, ConsoleManager,...) erstellt. Diese werden alle im Program.Main(...) initialisert. Mit der Zeit wird es etwas unordentlich, deswegen soll eine neue Zentrale Klasse erstellt werden welche die gesamte Konfiguration wrapt und an die Top-Level Komponenten verteilt. Weiterhin wird eine Beende-Funktion in diese Klasse implementiert und die Settings werden ebenfalls hier verwaltet.
+
+```nomnoml
+#direction: right
+[SnakeAI|
+  + Game : Game
+  + Settings : Settings
+  + ControlManager : ControlManager
+  + SoundManager : SoundManager
+  + ConsoleManager : ConsoleManager|
+  + SnakeAI()
+  + Start() : void
+  + Stop() : void
+]
+
+[SnakeAI] <-> [ConsoleManager||
+  + ConsoleManager(p : SnakeAI)]
+[SnakeAI] <-> [ControlManager||
+  + ControlManager(p : SnakeAI)]
+[SnakeAI] <-> [SoundManager||
+  + SoundManager(p : SnakeAI)]
+[SnakeAI] -> [Game]
+[SnakeAI] -> [Settings]
+```
 
 ## Sound
 #### Problembeschreibung:

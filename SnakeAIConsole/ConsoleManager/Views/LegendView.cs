@@ -9,16 +9,13 @@ namespace SnakeAIConsole
 {
     public class LegendView : ConsoleArea
     {
-        public LegendView(Point topLeft, Size size) : base(topLeft, size)
+        public LegendView(Point topLeft, int width) : base(topLeft, new Size(width, 7))
         {
-
             FillBackground(Theme.MenuItem);
-            Write(0, 0, Theme.MenuItem, "         LEGENDE: ");
-            Write(0, 1, Theme.MenuItem, "[A]/[D]: Steuerung der Schlange");
-            Write(0, 2, Theme.MenuItem, "[W]/[S]: Steuerung des Menüs");
-            Write(0, 3, Theme.MenuItem, "[Enter]: Menü betätigen");
-            Write(0, 5, Theme.MenuItem, "Für eine optimale Darstellung ist es empfohlen, als Schriftart 'Raster Fonts' auszuwählen mit der Grösse 8x8");
-
+            Write(0, 1, Theme.MenuItem, new string(' ', width/2 - 5) + "SNAKE A.I.");
+            Write(0, 3, Theme.MenuItem, " [A]/[D]: Steuerung der Schlange");
+            Write(0, 4, Theme.MenuItem, " [W]/[S]: Steuerung des Menüs");
+            Write(0, 5, Theme.MenuItem, " [Enter]: Menü betätigen");
         }
     }
 }

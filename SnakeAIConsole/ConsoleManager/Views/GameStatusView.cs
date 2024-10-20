@@ -21,7 +21,7 @@ internal class GameStatusView : ConsoleArea
     public override void Refresh()
     {
         WriteLine(0, Theme.Default, true, $"Schlangenlänge : {Console.Game.Snake.TailLength,15}");
-        WriteLine(1, Theme.Default, true, $"Futteranzahl   : {Console.Game.Food.Count,15}");
+        WriteLine(1, Theme.Default, true, $"Futteranzahl   : {Console.Game.FoodCount,15}");
 
         WriteLine(2, Theme.Default, true, $"Gui Frames     : {Console.FrameCount,15}");
         WriteLine(3, Theme.Default, true, $"GUI Frames/sec : {Console.MeasuredFramesPerSecond,15:n2}");

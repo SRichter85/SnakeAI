@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,8 @@ namespace SnakeAIConsole {
 
         private List<FoodView> _foodViews = new List<FoodView>();
 
-        private SyncStack<Food> _foodSrc;
-
         public GameView(Point topLeft, Game game) : base(topLeft, game.Board.Size) {
             Game = game;
-            _foodSrc = new SyncStack<Food>(game.Food);
             FillBackground(Theme.Board);
             _snakeView = new SnakeView(Game.Snake, this);
         }
@@ -26,11 +24,11 @@ namespace SnakeAIConsole {
 
         public override void Refresh() {
             // check if new foods have been added or removed
-            _foodSrc.Sync();
-            if (_foodSrc.Count != _foodViews.Count) {
+            var foods = Game.Food;
+            if (foods.Count() != _foodViews.Count) {
                 List<FoodView> objectsToRemove = new List<FoodView>();
                 foreach (var obj in _foodViews) {
-                    if (!_foodSrc.Any(x => x == obj.GameObject)) {
+                    if (!foods.Any(x => x == obj.GameObject)) {
                         objectsToRemove.Add(obj);
                     }
                 }
@@ -40,7 +38,7 @@ namespace SnakeAIConsole {
                     _foodViews.Remove(obj);
                 }
 
-                foreach (var f in _foodSrc) {
+                foreach (var f in foods) {
                     if (!_foodViews.Any(x => x.GameObject == f)) {
                         _foodViews.Add(new FoodView(f, this));
                     }

@@ -4,7 +4,8 @@ namespace SnakeAICore;
 
 public class Game : ThreadedManager
 {
-
+    private Stack<Food> _foodStack = new Stack<Food>();
+    private object _foodLock = new object();
     public Game()
     {
         Board = new GameBoard(this);
@@ -13,7 +14,15 @@ public class Game : ThreadedManager
 
     public GameBoard Board { get; }
 
-    public SyncStack<Food> Food { get; } = new SyncStack<Food>();
+    public IEnumerable<Food> Food
+    {
+        get
+        {
+            lock (_foodLock) return new List<Food>(_foodStack);
+        }
+    }
+
+    public int FoodCount { get { return _foodStack.Count; } }
 
     public Snake Snake { get; }
 
@@ -21,24 +30,24 @@ public class Game : ThreadedManager
     {
         if (cnt < 0) return;
 
-        int diff = Food.Count - cnt;
-        //lock(Food._lock)
-        //{
+        int diff = FoodCount - cnt;
+        lock (_foodLock)
+        {
             if (diff > 0)
             {
                 for (int i = 0; i < diff; i++)
                 {
-                    Food.Pop();
+                    _foodStack.Pop();
                 }
             }
             else if (diff < 0)
             {
                 for (int i = diff; i < 0; i++)
                 {
-                    Food.Push(new Food(this));
+                    _foodStack.Push(new Food(this));
                 }
             }
-        //}
+        }
     }
 
     protected override void Setup()
@@ -50,7 +59,7 @@ public class Game : ThreadedManager
     {
         Snake.UpdatePosition();
         Snake.CheckCollision(Snake);
-        lock(Food._lock)
+        lock(_foodLock)
         {
             foreach (var f in Food)
             {
