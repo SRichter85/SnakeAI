@@ -29,10 +29,12 @@ public class SoundManager : ThreadedManager
         if (tailLength > _lastLength)
         {
             //Console.Beep();
+            _onEat?.Stop();
             _onEat?.Play();
         }
         else if (tailLength < _lastLength)
         {
+            _onKill?.Stop();
             _onKill?.Play();
         }
         _lastLength = tailLength;

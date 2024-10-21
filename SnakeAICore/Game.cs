@@ -52,7 +52,7 @@ public class Game : ThreadedManager
 
     protected override void Setup()
     {
-        SetFoodCount(10);
+        SetFoodCount(0);
     }
 
     protected override void Loop()

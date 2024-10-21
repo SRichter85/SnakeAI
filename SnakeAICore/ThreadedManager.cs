@@ -40,6 +40,23 @@ public abstract class ThreadedManager
         }
     }
 
+    public int MillisecondsPerFrame
+    {
+        get { return _msPerFrame; }
+        set
+        {
+            _msPerFrame = value < 0 ? 0 : value;
+            if (_msPerFrame == 0)
+            {
+                _fps = Double.PositiveInfinity;
+            }
+            else
+            {
+                _fps = 1000.0 / _msPerFrame;
+            }
+        }
+    }
+
     /// <summary>
     /// The measured numbers of frames per second
     /// </summary>

@@ -9,17 +9,19 @@ namespace SnakeAIConsole;
 
 public class SnakeAiConfiguration
 {
+    public const string SettingsPath = "settings.json";
+
     private List<ThreadedManager> _components = new List<ThreadedManager>(4);
     private Thread _mainThread;
-    
+
     public SnakeAiConfiguration()
     {
         _mainThread = Thread.CurrentThread;
 
-        Game = new Game() { FramesPerSecond = 20 };
-        Console = new ConsoleManager(this) { FramesPerSecond = 50 };
-        Control = new ControlManager(this) { FramesPerSecond = 50 };
-        Sound = new SoundManager(this) { FramesPerSecond = 50 };
+        Game = new Game() { MillisecondsPerFrame = 32 };
+        Console = new ConsoleManager(this) { MillisecondsPerFrame = 8 };
+        Control = new ControlManager(this) { MillisecondsPerFrame = 8 };
+        Sound = new SoundManager(this) { FramesPerSecond = 20 };
 
         _components.Add(Game);
         _components.Add(Console);
@@ -27,6 +29,7 @@ public class SnakeAiConfiguration
         _components.Add(Sound);
 
         _components.ForEach(c => c.OnException += Component_OnException);
+        Game.Snake.OnKilled += Snake_OnKilled;
     }
 
     public Game Game { get; }
@@ -36,11 +39,29 @@ public class SnakeAiConfiguration
 
     public SoundManager Sound { get; }
 
+    public Settings Settings { get; private set; } = new Settings();
+
     public bool IsRunning => _components.Any(x => x.IsRunning);
 
-    public void Start() => _components.ForEach(c => c.Start());
+    public void Start()
+    {
+        var settings = Settings.Read(SettingsPath);
+        if (settings != null)
+        {
+            Settings = settings;
+        }
 
-    public void Stop() => _components.ForEach(c => c.Stop(false));
+        _components.ForEach(c => c.Start());
+
+        Game.SetFoodCount(Settings.FoodCount);
+        Game.MillisecondsPerFrame = Settings.GameSpeed;
+    }
+
+    public void Stop()
+    {
+        Settings.Write(SettingsPath);
+        _components.ForEach(c => c.Stop(false));
+    }
 
     private void Component_OnException(object? sender, ExceptionEventArgs e)
     {
@@ -49,5 +70,14 @@ public class SnakeAiConfiguration
         System.Console.ForegroundColor = ConsoleColor.White;
         System.Console.WriteLine("An Error occured during execution:");
         System.Console.WriteLine(e.Exception.Message);
+    }
+
+    private void Snake_OnKilled(object? sender, EventArgs e)
+    {
+        var snake = sender as Snake;
+        if (snake == null) return;
+
+        Settings.AppendHighscore(snake, Game.FrameCount - snake.CreatedAtFrame);
+        Console.Highscore?.SetData(Settings.Highscores);
     }
 }

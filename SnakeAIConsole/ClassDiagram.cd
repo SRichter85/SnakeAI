@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="SnakeAIConsole.SnakeAiConfiguration">
+    <Position X="1.5" Y="5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAEACAAIAAAAAAQQAAAAAgAAAAAJAAAAAAAAAA=</HashCode>
+      <FileName>SnakeAiConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.Program">
+    <Position X="2.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.SoundManager">
+    <Position X="5.25" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAICAAABACAAAAAAAAAAAgAAAAAgAAAAAAAEAA=</HashCode>
+      <FileName>SoundManager\SoundManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.ControlManager">
+    <Position X="11.25" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAICAAAAABAAAAAAAAAAAgAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ControlManager\ControlManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.Theme">
+    <Position X="18.5" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAQAAAIAAAAAAAAACAAAAAAigAAAA=</HashCode>
+      <FileName>ConsoleManager\ThemeItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.ThemeItem">
+    <Position X="18.5" Y="9.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ConsoleManager\ThemeItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.ConsoleManager">
+    <Position X="8.25" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAICAAAAAAAAAAAAAAAAAgIAAAAgAAAAAAAAAE=</HashCode>
+      <FileName>ConsoleManager\ConsoleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.ConsoleFontHelper">
+    <Position X="8.25" Y="8.25" Width="2.5" />
+    <NestedTypes>
+      <Enum Name="SnakeAIConsole.ConsoleFontHelper.Font" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\ConsoleFontHelper.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="SnakeAIConsole.ConsoleFontHelper.StdHandle" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\ConsoleFontHelper.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="SnakeAIConsole.ConsoleFontHelper.COORD" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\ConsoleFontHelper.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="SnakeAIConsole.ConsoleFontHelper.CONSOLE_FONT_INFO_EX" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\ConsoleFontHelper.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAAAAACAAAAAQ=</HashCode>
+      <FileName>ConsoleManager\ConsoleFontHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.ConsoleArea">
+    <Position X="20.25" Y="0.5" Width="2.5" />
+    <NestedTypes>
+      <Struct Name="SnakeAIConsole.ConsoleArea.Run" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\ConsoleArea.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAABAhBAJAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ConsoleManager\ConsoleArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.LegendView">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\LegendView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.GameStatusView">
+    <Position X="21.25" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\GameStatusView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.MenuViewItem">
+    <Position X="21.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAFAEAQAAAABAAAAAAAAAAAAACAAgAAAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\MenuView\MenuViewItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.MenuView">
+    <Position X="23.75" Y="4.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAABAAgAAAEACAABAABgAAAAAwBAAgAAQAAA=</HashCode>
+      <FileName>ConsoleManager\Views\MenuView\MenuView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.SnakeView">
+    <Position X="11.5" Y="10.25" Width="2.75" />
+    <NestedTypes>
+      <Class Name="SnakeAIConsole.SnakeView.CharCache" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConsoleManager\Views\GameView\SnakeView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQBABAAAAAAAAAAAAAAAABAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\GameView\SnakeView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SnakeAIConsole.GameView">
+    <Position X="18.75" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEBAAAAAAAAAAgAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\GameView\GameView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SnakeAIConsole.FoodView">
+    <Position X="14.5" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAABAAAABAAAAAAAAAAABAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\GameView\FoodView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SnakeAICore.ThreadedManager">
+    <Position X="8.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="SnakeAIConsole.IGameObjectView">
+    <Position X="13" Y="8" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>ConsoleManager\Views\GameView\IGameObjectView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

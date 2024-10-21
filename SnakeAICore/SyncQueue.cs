@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace SnakeAICore
 {
+    // NOTE: Not yet implemented
+
     public class SyncQueue<T> : Queue<T>
     {
         private object _lock = new object();

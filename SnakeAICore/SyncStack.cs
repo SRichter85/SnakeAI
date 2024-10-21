@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SnakeAICore;
 
+// NOTE: Not yet implemented
 public class SyncStack<T> : IEnumerable<T>
 {
     public object _lock = new object();

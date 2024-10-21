@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace SnakeAICore
 {
+
     public class Snake : IGameObject
     {
+
 
         private readonly Queue<Point> _tails = new Queue<Point>();
 
@@ -21,11 +23,16 @@ namespace SnakeAICore
 
         private Point _oldHead = new Point(0, 0);
 
+        public EventHandler OnKilled;
+
         internal Snake(Game game)
         {
             Game = game;
             Head = game.Board.CreatePoint();
+            CreatedAtFrame = Game.FrameCount;
         }
+
+        public int CreatedAtFrame { get; private set; }
 
         public Game Game { get; }
 
@@ -67,6 +74,8 @@ namespace SnakeAICore
             {
                 _killed = true;
             }
+
+            if (_killed) OnKilled?.Invoke(this, EventArgs.Empty);
         }
 
         public bool DoesCollide(Point pt)
@@ -124,6 +133,7 @@ namespace SnakeAICore
                     _tails.Clear();
                 }
 
+                CreatedAtFrame = Game.FrameCount;
                 Head = Game.Board.CreatePoint();
                 return;
             }
@@ -143,6 +153,15 @@ namespace SnakeAICore
                 lock (_tailsLock) { _tails.Dequeue(); }
             }
 
+        }
+        public class SnakeEventArgs : EventArgs
+        {
+            public SnakeEventArgs(Snake snake)
+            {
+                Snake = snake;
+            }
+
+            public Snake Snake { get; }
         }
     }
 }

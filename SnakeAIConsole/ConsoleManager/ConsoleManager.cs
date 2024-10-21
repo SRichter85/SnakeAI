@@ -18,6 +18,8 @@ public class ConsoleManager : ThreadedManager
     public Game Game => Configuration.Game;
 
     public MenuView? Menu { get; private set; }
+    
+    public HighscoreView? Highscore { get; private set; }
 
     protected override void Setup()
     {
@@ -34,16 +36,23 @@ public class ConsoleManager : ThreadedManager
         var status = new GameStatusView(this, new Point(1, game.BottomRight.Y - 6), 38);
         _areas.Add(status);
 
+        Highscore = new HighscoreView(Configuration, 1, game.BottomRight.Y + 1, game.BottomRight.X - 1);
+        _areas.Add(Highscore);
+
+
+        SetFontSize(8);
         Console.Title = "Snake A.I.";
-        Console.WindowHeight = game.BottomRight.Y + 1;
-        Console.WindowWidth = game.BottomRight.X + 1;
+        Console.WindowHeight = Highscore.BottomRight.Y + 1;
+        Console.WindowWidth = Highscore.BottomRight.X + 1;
 
         Console.CursorVisible = false;
-
-        ConsoleFontHelper.SetFont(ConsoleFontHelper.Font.Consolas, 12, 12, true);
-
+        SetFontSize(Configuration.Settings.FontSize);
     }
 
+    public void SetFontSize(short fontSize)
+    {
+        ConsoleFontHelper.SetFont(ConsoleFontHelper.Font.Consolas, fontSize, fontSize, true);
+    }
     protected override void Loop()
     {
         _areas.ForEach(x => x.Refresh());

@@ -15,7 +15,7 @@ public class MenuView : ConsoleArea
     private List<MenuViewItem> _items = new List<MenuViewItem>();
     private int _selectedIndex = 0;
 
-    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 11))
+    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 14))
     {
 
         Configuration = configuration;
@@ -29,7 +29,10 @@ public class MenuView : ConsoleArea
         _items.Add(new MenuViewItem(6, this, "Füge Futter hinzu", ActionFutterAdd));
         _items.Add(new MenuViewItem(7, this, "Entferne Futter", ActionFutterRemove));
 
-        _items.Add(new MenuViewItem(9, this, "Beende", ActionBeende));
+        _items.Add(new MenuViewItem(9, this, "Zoom In", ZoomIn));
+        _items.Add(new MenuViewItem(10, this, "Zoom Out", ZoomOut));
+
+        _items.Add(new MenuViewItem(13, this, "Beende", ActionBeende));
 
         SelectedItem = _items.First();
         SelectedItem.IsSelected = true;
@@ -73,13 +76,53 @@ public class MenuView : ConsoleArea
         }
     }
 
-    private void ActionSchneller() { Game.FramesPerSecond += Game.FramesPerSecond < 100 ? 5 : 0; }
+    private void ActionSchneller()
+    {
+        Game.MillisecondsPerFrame = Game.MillisecondsPerFrame == 0 ? 0 :
+            Game.MillisecondsPerFrame / 2;
+        Configuration.Settings.GameSpeed = Game.MillisecondsPerFrame;
+    }
 
-    private void ActionLangsamer() { Game.FramesPerSecond -= Game.FramesPerSecond > 5 ? 5 : 0; }
+    private void ActionLangsamer()
+    {
+        Game.MillisecondsPerFrame = Game.MillisecondsPerFrame == 0 ? 1 :
+            Game.MillisecondsPerFrame >= 1024 ? 2048 :
+            Game.MillisecondsPerFrame * 2;
+        Configuration.Settings.GameSpeed = Game.MillisecondsPerFrame;
+    }
 
-    private void ActionFutterAdd() { Game.SetFoodCount(Game.FoodCount + 1); }
+    private void ActionFutterAdd()
+    {
+        Game.SetFoodCount(Game.FoodCount + 1);
+        Configuration.Settings.FoodCount = Game.FoodCount;
+    }
 
-    private void ActionFutterRemove() { Game.SetFoodCount(Game.FoodCount - 1); }
+    private void ActionFutterRemove()
+    {
+        Game.SetFoodCount(Game.FoodCount - 1);
+        Configuration.Settings.FoodCount = Game.FoodCount;
+    }
 
-    private void ActionBeende() { Configuration.Stop(); }
+    private void ZoomIn()
+    {
+        if (Configuration.Settings.FontSize < 32)
+        {
+            Configuration.Settings.FontSize++;
+            Configuration.Console.SetFontSize(Configuration.Settings.FontSize);
+        }
+    }
+
+    private void ZoomOut()
+    {
+        if (Configuration.Settings.FontSize > 5)
+        {
+            Configuration.Settings.FontSize--;
+            Configuration.Console.SetFontSize(Configuration.Settings.FontSize);
+        }
+    }
+
+    private void ActionBeende()
+    {
+        Configuration.Stop();
+    }
 }

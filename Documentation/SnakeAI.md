@@ -325,6 +325,7 @@ Eine ConsoleArea ist ein "Wrapper" um die Console-Klasse (nicht im technischen S
 
 
 ```nomnoml
+#direction: right
 [Theme|
     + <static> Snake : ThemeItem
     + <static> Food : ThemeItem
@@ -498,6 +499,7 @@ Die Schlange soll ich visuell gleich schnell horizontal und vertikal bewegen.
 Es wurde eine ConsoleHelper-Klasse hinzugefügt, mit der eine quadratische Schrift beim Programstart festgelegt werden kann:
 
 ```nomnoml
+#direction: right
 [ConsoleFontHelper|
     |
     + <static> SetFont(font : Font, int : height, int : width, bold : bool)
@@ -551,7 +553,7 @@ Es wurden mehrere Top-Level Komponenten (SoundManager, ConsoleManager,...) erste
 
 ```nomnoml
 #direction: right
-[SnakeAI|
+[SnakeAIConfiguration|
   + Game : Game
   + Settings : Settings
   + ControlManager : ControlManager
@@ -562,15 +564,45 @@ Es wurden mehrere Top-Level Komponenten (SoundManager, ConsoleManager,...) erste
   + Stop() : void
 ]
 
-[SnakeAI] <-> [ConsoleManager||
-  + ConsoleManager(p : SnakeAI)]
-[SnakeAI] <-> [ControlManager||
-  + ControlManager(p : SnakeAI)]
-[SnakeAI] <-> [SoundManager||
-  + SoundManager(p : SnakeAI)]
-[SnakeAI] -> [Game]
-[SnakeAI] -> [Settings]
+[SnakeAIConfiguration] <-> [ConsoleManager||
+  + ConsoleManager(c : SnakeAIConfiguration)]
+[SnakeAIConfiguration] <-> [ControlManager||
+  + ControlManager(c : SnakeAIConfiguration)]
+[SnakeAIConfiguration] <-> [SoundManager||
+  + SoundManager(c : SnakeAIConfiguration)]
+[SnakeAIConfiguration] -> [Game]
+[SnakeAIConfiguration] -> [Settings]
 ```
+
+## World Wrap
+#### Problembeschreibung:
+Die ursprünglichen Regeln waren so definiert, dass wenn die Schlange den Rand berührt, dann stirbt sie. Aber es macht mehr Spass, wenn die Schlange einfach auf der anderen Seite wieder auftaucht sobald diese sich über den Rand bewegen würde.
+
+Im Zuge dessen wurde auch die GameBoard Klasse hinzugefügt und die Game Klasse etwas refactored:
+
+```nomnoml
+#direction: right
+[Game|
+  + Board : GameBoard
+  + Foods : Food\[\]
+  + Snake : Snake|
+  + Game()
+  + Setup() : void
+  + SetFoodCount(cnt : uint) : void
+  # Loop() : void
+]
+
+[GameBoard|
+  + Size : Size|
+  + GameBoard(g : Game)
+  + CreatePoint() : Point
+  + CreatePoint(x : int, y : int) : Point
+]
+
+[Game] +- [GameBoard]
+```
+
+Die frühere Funktion "GetRandomPoint()" heisst nun einfach CreatePoint() und ist in der GameBoard Klasse. Die CreatePoint Funktion mit den Werten x,y liefert einen zurück aber stellt sicher dass er in dem Spielfeld ist.
 
 ## Sound
 #### Problembeschreibung:
