@@ -12,7 +12,7 @@ public static class Theme {
 
     public static ThemeItem MenuItem { get; } = new ThemeItem(ConsoleColor.DarkGray, ConsoleColor.White);
 
-    public static ThemeItem MenuItemSelected { get; } = new ThemeItem(ConsoleColor.DarkGreen, ConsoleColor.White);
+    public static ThemeItem MenuItemSelected { get; } = new ThemeItem(ConsoleColor.DarkBlue, ConsoleColor.White);
 }
 
 public class ThemeItem {

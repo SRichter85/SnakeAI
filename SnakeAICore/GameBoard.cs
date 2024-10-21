@@ -59,8 +59,8 @@ public class GameBoard
     /// <summary>
     /// Checks if a point on the board is already occupied by a game object
     /// </summary>
-    /// <param name="point"></param>
-    /// <returns></returns>
+    /// <param name="point">The position to be checked</param>
+    /// <returns>true, if there is an object on this position. false otherwise</returns>
     private bool IsPointOccupied(Point point)
     {
         var snake = Game.Snake;
@@ -78,8 +78,13 @@ public class GameBoard
         return false;
     }
 
-
-    private int CycleNumber(int number, int max)
+    /// <summary>
+    /// returns number, but if number >= return 0 and if number < 0 returns (max-1)
+    /// </summary>
+    /// <param name="number"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    private static int CycleNumber(int number, int max)
     {
         if (number < 0) return max - 1;
         if (number >= max) return 0;

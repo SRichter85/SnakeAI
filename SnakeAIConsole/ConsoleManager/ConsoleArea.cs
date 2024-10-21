@@ -29,9 +29,19 @@ public class ConsoleArea {
         };
     }
 
+    /// <summary>
+    /// The top left coordinate of the area
+    /// </summary>
     public Point TopLeft { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public Size Size { get; }
 
+    /// <summary>
+    /// The bottom right coordinate of the area. The point is one step OUTSIDE the area
+    /// </summary>
     public Point BottomRight { get; }
 
     public void FillBackground(ThemeItem color) {

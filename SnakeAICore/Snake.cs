@@ -17,8 +17,8 @@ namespace SnakeAICore
 
         private object _tailsLock = new object();
 
-        private bool _increased = false;
-        private bool _killed = false;
+        private bool _signalHasEaten = false;
+        private bool _signalKilled = false;
         private DirectionChange _dirChange = DirectionChange.None;
 
         private Point _oldHead = new Point(0, 0);
@@ -55,7 +55,7 @@ namespace SnakeAICore
         {
             if (Head == food.Position)
             {
-                _increased = true;
+                _signalHasEaten = true;
                 food.Eat();
             }
         }
@@ -66,27 +66,16 @@ namespace SnakeAICore
             {
                 if (snake.Tails.Any(x => x == Head))
                 {
-                    _killed = true;
+                    _signalKilled = true;
                 }
             }
 
             if (snake != this && snake.Head == Head)
             {
-                _killed = true;
+                _signalKilled = true;
             }
 
-            if (_killed) OnKilled?.Invoke(this, EventArgs.Empty);
-        }
-
-        public bool DoesCollide(Point pt)
-        {
-            if (Head == pt) return true;
-            bool retVal = false;
-            lock (_tailsLock)
-            {
-                if (_tails.Any(x => x == pt)) retVal = true;
-            }
-            return retVal;
+            if (_signalKilled) OnKilled?.Invoke(this, EventArgs.Empty);
         }
 
         public void UpdatePosition()
@@ -120,13 +109,13 @@ namespace SnakeAICore
         }
 
         /// <summary>
-        /// Updates the state of the snake based on previously calculated
+        /// Updates the state of the snake based on previously calculated signal-flags (has been killed, etc.)
         /// </summary>
         public void UpdateState()
         {
-            if (_killed)
+            if (_signalKilled)
             {
-                _killed = false;
+                _signalKilled = false;
                 lock (_tailsLock)
                 {
                     TailLength = 0;
@@ -143,9 +132,9 @@ namespace SnakeAICore
                 _tails.Enqueue(_oldHead);
             }
 
-            if (_increased)
+            if (_signalHasEaten)
             {
-                _increased = false;
+                _signalHasEaten = false;
                 TailLength++;
             }
             else

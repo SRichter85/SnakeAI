@@ -55,7 +55,7 @@ public class Settings : StorableData<Settings>
 
 public class Highscore
 {
-    public string UserName { get; set; }
+    public string UserName { get; set; } = string.Empty;
     public DateTime Date { get; set; }
 
     public int SnakeLength { get; set; }

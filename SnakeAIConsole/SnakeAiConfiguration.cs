@@ -11,7 +11,7 @@ public class SnakeAiConfiguration
 {
     public const string SettingsPath = "settings.json";
 
-    private List<ThreadedManager> _components = new List<ThreadedManager>(4);
+    private List<IThreadedManager> _components = new List<IThreadedManager>(4);
     private Thread _mainThread;
 
     public SnakeAiConfiguration()
