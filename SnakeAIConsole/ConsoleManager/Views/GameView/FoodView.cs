@@ -23,14 +23,14 @@ namespace SnakeAIConsole {
         public ConsoleArea View { get; }
 
         public void Cleanup() {
-            View.Write(_old.X, _old.Y, Theme.Board, " ");
+            View.Write(_old.X, _old.Y, Theme.Board, ' ');
         }
 
         public void Refresh() {
             var np = _food.Position;
             if(_old != np) {
                 // View.Write(_old.X, _old.Y, Theme.Board, " ");
-                View.Write(np.X, np.Y, Theme.Food, "$");
+                View.Write(np.X, np.Y, Theme.Food, '$');
                 _old = np;
             }
         }

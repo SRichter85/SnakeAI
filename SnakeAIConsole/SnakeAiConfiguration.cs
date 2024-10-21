@@ -10,9 +10,12 @@ namespace SnakeAIConsole;
 public class SnakeAiConfiguration
 {
     private List<ThreadedManager> _components = new List<ThreadedManager>(4);
+    private Thread _mainThread;
     
     public SnakeAiConfiguration()
     {
+        _mainThread = Thread.CurrentThread;
+
         Game = new Game() { FramesPerSecond = 20 };
         Console = new ConsoleManager(this) { FramesPerSecond = 50 };
         Control = new ControlManager(this) { FramesPerSecond = 50 };
@@ -24,8 +27,6 @@ public class SnakeAiConfiguration
         _components.Add(Sound);
 
         _components.ForEach(c => c.OnException += Component_OnException);
-
-        IsRunning = false;
     }
 
     public Game Game { get; }
@@ -35,19 +36,11 @@ public class SnakeAiConfiguration
 
     public SoundManager Sound { get; }
 
-    public bool IsRunning { get; private set; }
+    public bool IsRunning => _components.Any(x => x.IsRunning);
 
-    public void Start()
-    {
-        _components.ForEach(c => c.Start());
-        IsRunning = true;
-    }
+    public void Start() => _components.ForEach(c => c.Start());
 
-    public void Stop()
-    {
-        _components.ForEach(c => c.Stop(true));
-        IsRunning = false;
-    }
+    public void Stop() => _components.ForEach(c => c.Stop(false));
 
     private void Component_OnException(object? sender, ExceptionEventArgs e)
     {

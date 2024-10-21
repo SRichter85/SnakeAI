@@ -19,8 +19,6 @@ public abstract class ThreadedManager
 
     private Queue<long> _frameTicks = new Queue<long>();
 
-    private bool _cancellationPending = false;
-
     public event EventHandler<ExceptionEventArgs>? OnException;
 
     protected ThreadedManager()
@@ -55,9 +53,12 @@ public abstract class ThreadedManager
     /// The number of cycles or frames the thread has completed
     /// </summary>
     public int FrameCount { get; private set; }
+    public bool IsRunning { get; private set; }
+    public bool CancellationPending { get; private set; }
 
     public void Start()
     {
+        IsRunning = true;
         Setup();
         _thread.Start();
     }
@@ -68,11 +69,11 @@ public abstract class ThreadedManager
     /// <param name="wait"></param>
     public void Stop(bool wait)
     {
-        _cancellationPending = true;
+        CancellationPending = true;
         if (wait)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            while (_thread.IsAlive)
+            while (IsRunning)
             {
                 Wait(sw);
                 sw.Restart();
@@ -137,7 +138,7 @@ public abstract class ThreadedManager
     private void ThreadAction()
     {
         var stopwatch = Stopwatch.StartNew();
-        while (!_cancellationPending)
+        while (!CancellationPending)
         {
             try
             {
@@ -146,7 +147,7 @@ public abstract class ThreadedManager
             catch (Exception ex)
             {
                 OnException?.Invoke(this, new ExceptionEventArgs(ex));
-                return;
+                break;
             }
 
             Wait(stopwatch);
@@ -155,5 +156,7 @@ public abstract class ThreadedManager
             FrameCount++;
             stopwatch.Restart();
         }
+
+        IsRunning = false;
     }
 }
