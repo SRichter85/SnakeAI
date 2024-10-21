@@ -21,7 +21,7 @@ public class SnakeAiConfiguration
         Game = new Game() { MillisecondsPerFrame = 32 };
         Console = new ConsoleManager(this) { MillisecondsPerFrame = 8 };
         Control = new ControlManager(this) { MillisecondsPerFrame = 8 };
-        Sound = new SoundManager(this) { FramesPerSecond = 20 };
+        Sound = new SoundManager(this) { MillisecondsPerFrame = 8 };
 
         _components.Add(Game);
         _components.Add(Console);

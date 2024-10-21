@@ -28,14 +28,13 @@ public class SoundManager : ThreadedManager
         var tailLength = Game.Snake.TailLength;
         if (tailLength > _lastLength)
         {
-            //Console.Beep();
-            _onEat?.Stop();
+            //_onEat?.PlaySync();
             _onEat?.Play();
         }
         else if (tailLength < _lastLength)
         {
-            _onKill?.Stop();
-            _onKill?.Play();
+            _onKill?.PlaySync();
+            //_onKill?.Play();
         }
         _lastLength = tailLength;
     }

@@ -15,7 +15,7 @@ public class MenuView : ConsoleArea
     private List<MenuViewItem> _items = new List<MenuViewItem>();
     private int _selectedIndex = 0;
 
-    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 14))
+    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 16))
     {
 
         Configuration = configuration;
