@@ -10,14 +10,22 @@ using System.Threading.Tasks;
 namespace SnakeAIConsole {
     public class GameView : ConsoleArea {
 
-        private SnakeView _snakeView;
+        private List<SnakeView> _snakeViews = new List<SnakeView>();
 
         private List<FoodView> _foodViews = new List<FoodView>();
 
         public GameView(Point topLeft, Game game) : base(topLeft, game.Board.Size) {
             Game = game;
             FillBackground(Theme.Board);
-            _snakeView = new SnakeView(Game.Snake, this);
+
+            foreach (var s in game.Snakes.Snakes) _snakeViews.Add(new SnakeView(s, this));
+
+            int numColors = Math.Min(_snakeViews.Count, Math.Min(Theme.SnakeHead.Length, Theme.SnakeTail.Length));
+            for (int idx = 0; idx < numColors; idx++)
+            {
+                _snakeViews[idx].HeadColor = Theme.SnakeHead[idx];
+                _snakeViews[idx].TailColor = Theme.SnakeHead[idx];
+            }
         }
 
         public Game Game { get; }
@@ -46,7 +54,7 @@ namespace SnakeAIConsole {
             }
 
             // refresh views
-            _snakeView.Refresh();
+            _snakeViews.ForEach(x => x.Refresh());
             foreach (var obj in _foodViews) obj.Refresh();
             base.Refresh();
         }

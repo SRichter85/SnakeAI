@@ -20,11 +20,17 @@ namespace SnakeAIConsole
         {
             _snake = snake;
             View = view;
+            HeadColor = Theme.SnakeHead[0];
+            TailColor = Theme.SnakeTail[0];
         }
 
         public IGameObject GameObject { get { return _snake; } }
 
         public ConsoleArea View { get; }
+
+        public ThemeItem HeadColor { get; set; }
+
+        public ThemeItem TailColor { get; set; }
 
         public void Cleanup()
         {
@@ -33,6 +39,12 @@ namespace SnakeAIConsole
 
         public void Refresh()
         {
+            if (!_snake.IsActive)
+            {
+                Cleanup();
+                return;
+            }
+
             // Mark all old position for overwritting
             foreach (var kvp in _data) { kvp.Value.New = ' '; }
 
@@ -55,8 +67,8 @@ namespace SnakeAIConsole
                 if (kvp.Value.Old != kvp.Value.New)
                 {
                     kvp.Value.Old = kvp.Value.New;
-                    var theme = kvp.Value.New == 'X' ? Theme.SnakeHead :
-                        kvp.Value.New == '+' ? Theme.SnakeTail :
+                    var theme = kvp.Value.New == 'X' ? HeadColor:
+                        kvp.Value.New == '+' ? TailColor:
                         Theme.Board;
                     View.Write(kvp.Key.X, kvp.Key.Y, theme, kvp.Value.New);
                 }

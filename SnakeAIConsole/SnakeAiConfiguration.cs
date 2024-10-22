@@ -29,7 +29,6 @@ public class SnakeAiConfiguration
         _components.Add(Sound);
 
         _components.ForEach(c => c.OnException += Component_OnException);
-        Game.Snake.OnKilled += Snake_OnKilled;
     }
 
     public Game Game { get; }
@@ -55,6 +54,7 @@ public class SnakeAiConfiguration
 
         Game.SetFoodCount(Settings.FoodCount);
         Game.MillisecondsPerFrame = Settings.GameSpeed;
+        foreach (var snake in Game.Snakes.Snakes) snake.OnKilled += Snake_OnKilled;
     }
 
     public void Stop()
@@ -77,7 +77,12 @@ public class SnakeAiConfiguration
         var snake = sender as Snake;
         if (snake == null) return;
 
-        Settings.AppendHighscore(snake, Game.FrameCount - snake.CreatedAtFrame);
+        int playerId = Control.GetPlayerId(snake);
+        if(playerId == -1) return;
+
+        bool isFirstPlayer = playerId == 0;
+
+        Settings.AppendHighscore(isFirstPlayer, snake, Game.FrameCount - snake.CreatedAtFrame);
         Console.Highscore?.SetData(Settings.Highscores);
     }
 }

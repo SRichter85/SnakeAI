@@ -14,8 +14,9 @@ public class MenuView : ConsoleArea
 
     private List<MenuViewItem> _items = new List<MenuViewItem>();
     private int _selectedIndex = 0;
+    private bool[] _isPlayerActive = new bool[2];
 
-    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 16))
+    public MenuView(SnakeAiConfiguration configuration, Point topLeft, int width) : base(topLeft, new Size(width, 19))
     {
 
         Configuration = configuration;
@@ -32,7 +33,10 @@ public class MenuView : ConsoleArea
         _items.Add(new MenuViewItem(9, this, "Zoom In", ZoomIn));
         _items.Add(new MenuViewItem(10, this, "Zoom Out", ZoomOut));
 
-        _items.Add(new MenuViewItem(13, this, "Beende", ActionBeende));
+        _items.Add(new MenuViewItem(12, this, "Aktiviere Spieler 1", item => ActivatePlayer(item, 0)));
+        _items.Add(new MenuViewItem(13, this, "Aktiviere Spieler 2", item => ActivatePlayer(item, 1)));
+
+        _items.Add(new MenuViewItem(16, this, "Beende", ActionBeende));
 
         SelectedItem = _items.First();
         SelectedItem.IsSelected = true;
@@ -76,14 +80,14 @@ public class MenuView : ConsoleArea
         }
     }
 
-    private void ActionSchneller()
+    private void ActionSchneller(MenuViewItem src)
     {
         Game.MillisecondsPerFrame = Game.MillisecondsPerFrame == 0 ? 0 :
             Game.MillisecondsPerFrame / 2;
         Configuration.Settings.GameSpeed = Game.MillisecondsPerFrame;
     }
 
-    private void ActionLangsamer()
+    private void ActionLangsamer(MenuViewItem src)
     {
         Game.MillisecondsPerFrame = Game.MillisecondsPerFrame == 0 ? 1 :
             Game.MillisecondsPerFrame >= 1024 ? 2048 :
@@ -91,19 +95,19 @@ public class MenuView : ConsoleArea
         Configuration.Settings.GameSpeed = Game.MillisecondsPerFrame;
     }
 
-    private void ActionFutterAdd()
+    private void ActionFutterAdd(MenuViewItem src)
     {
         Game.SetFoodCount(Game.FoodCount + 1);
         Configuration.Settings.FoodCount = Game.FoodCount;
     }
 
-    private void ActionFutterRemove()
+    private void ActionFutterRemove(MenuViewItem src)
     {
         Game.SetFoodCount(Game.FoodCount - 1);
         Configuration.Settings.FoodCount = Game.FoodCount;
     }
 
-    private void ZoomIn()
+    private void ZoomIn(MenuViewItem src)
     {
         if (Configuration.Settings.FontSize < 32)
         {
@@ -112,7 +116,7 @@ public class MenuView : ConsoleArea
         }
     }
 
-    private void ZoomOut()
+    private void ZoomOut(MenuViewItem src)
     {
         if (Configuration.Settings.FontSize > 5)
         {
@@ -121,8 +125,30 @@ public class MenuView : ConsoleArea
         }
     }
 
-    private void ActionBeende()
+    private void ActionBeende(MenuViewItem src)
     {
         Configuration.Stop();
+    }
+
+    private void ActivatePlayer(MenuViewItem item, int playerId)
+    {
+        if (_isPlayerActive[playerId])
+        {
+            Configuration.Control.DeactivateSnake(playerId);
+            _isPlayerActive[playerId] = false;
+            item.DisplayText = $"Aktiviere Spieler {playerId+1}";
+            item.ForceRefresh();
+        }
+        else
+        {
+            var snake = Game.Snakes.ActivateSnake();
+            if (snake != null)
+            {
+                Configuration.Control.ActivateSnake(playerId, snake);
+                _isPlayerActive[playerId] = true;
+                item.DisplayText = $"Deaktiviere Spieler {playerId + 1}";
+                item.ForceRefresh();
+            }
+        }
     }
 }

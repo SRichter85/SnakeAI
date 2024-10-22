@@ -9,7 +9,7 @@ public class Game : ThreadedManager
     public Game()
     {
         Board = new GameBoard(this);
-        Snake = new Snake(this);
+        Snakes = new SnakePopulation(this);
     }
 
     public GameBoard Board { get; }
@@ -18,13 +18,13 @@ public class Game : ThreadedManager
     {
         get
         {
-            lock (_foodLock) return new List<Food>(_foodStack);
+            lock (_foodLock) return new List<Food>(_foodStack); // return copy because of thread safety
         }
     }
 
     public int FoodCount { get { return _foodStack.Count; } }
 
-    public Snake Snake { get; }
+    public SnakePopulation Snakes { get; }
 
     public void SetFoodCount(int cnt)
     {
@@ -57,17 +57,18 @@ public class Game : ThreadedManager
 
     protected override void Loop()
     {
-        Snake.UpdatePosition();
-        Snake.CheckCollision(Snake);
+        Snakes.UpdatePosition();
+
+        Snakes.CheckCollision();
         lock(_foodLock)
         {
-            foreach (var f in Food)
+            foreach (var food in _foodStack)
             {
-                Snake.CheckCollision(f);
-                f.UpdateState();
+                Snakes.CheckCollision(food);
+                food.UpdateState();
             }
         }
 
-        Snake.UpdateState();
+        Snakes.UpdateState();
     }
 }

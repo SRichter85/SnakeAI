@@ -8,7 +8,11 @@ public class SoundManager : BackgroundedManager
 {
     private SoundPlayer? _onKill;
     private SoundPlayer? _onEat;
-    private int _lastLength = 0;
+
+    /// <summary>
+    /// stores the tail length of the snakes so that the Loop function can detect changes
+    /// </summary>
+    private Dictionary<Snake, int> _tailLengthCache = new Dictionary<Snake, int>();
 
     //private List<SoundPlayingThread> _eatThreads = new List<SoundPlayingThread>();
 
@@ -24,6 +28,7 @@ public class SoundManager : BackgroundedManager
     protected override void Setup()
     {
         //for (int i = 0; i < 1; i++) _eatThreads.Add(new SoundPlayingThread(new SoundPlayer("SoundManager/onEat.wav")));
+        foreach (var snake in Game.Snakes.Snakes) _tailLengthCache[snake] = 0;
 
         _onKill = new SoundPlayer("SoundManager/onKill.wav");
         _onEat = new SoundPlayer("SoundManager/onEat.wav");
@@ -33,28 +38,37 @@ public class SoundManager : BackgroundedManager
 
     protected override void Loop()
     {
-        var tailLength = Game.Snake.TailLength;
-        if (tailLength > _lastLength)
+        foreach (var snakeIntPair in _tailLengthCache)
         {
-            // var eatThread = _eatThreads.FirstOrDefault(x => !x.IsPlaying);
-            //if (eatThread != null) eatThread.PlayOnce();
+            if (!snakeIntPair.Key.IsActive) continue;
 
-            //var eatThread = _eatThreads.First();
-            //eatThread.StopSound();
-            //eatThread.PlayOnce();
+            var tailLength = snakeIntPair.Key.TailLength;
+            if (tailLength > snakeIntPair.Value)
+            {
+                // var eatThread = _eatThreads.FirstOrDefault(x => !x.IsPlaying);
+                //if (eatThread != null) eatThread.PlayOnce();
 
-            //_onEat?.PlaySync();
-            _onEat?.Play();
+                //var eatThread = _eatThreads.First();
+                //eatThread.StopSound();
+                //eatThread.PlayOnce();
+
+                //_onEat?.PlaySync();
+                _onEat?.Play();
+            }
+            else if (tailLength < snakeIntPair.Value)
+            {
+                _onKill?.PlaySync();
+                //_onKill?.Play();
+            }
+
+            _tailLengthCache[snakeIntPair.Key] = snakeIntPair.Key.TailLength;
         }
-        else if (tailLength < _lastLength)
-        {
-            _onKill?.PlaySync();
-            //_onKill?.Play();
-        }
-
-        _lastLength = Game.Snake.TailLength;
     }
 }
+
+
+// Comment: The sound is sometimes buggy. The SoundPlayingThread was supposed to fix this, but did not improve.
+// We still keep it here, maybe we will need it later.
 
 public class SoundPlayingThread
 {

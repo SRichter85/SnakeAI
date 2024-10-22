@@ -11,6 +11,8 @@ public class Settings : StorableData<Settings>
 {
     public string UserName { get; set; } = "User";
 
+    public string UserName2 { get; set; } = "User2";
+
     public int FoodCount { get; set; } = 10;
 
     public int GameSpeed { get; set; } = 32;
@@ -19,14 +21,14 @@ public class Settings : StorableData<Settings>
 
     public List<Highscore> Highscores { get; set; } = new List<Highscore>(101);
 
-    public void AppendHighscore(Snake snake, int frameCount)
+    public void AppendHighscore(bool firstUser, Snake snake, int frameCount)
     {
         var list = Highscores;
         if (list == null) return;
 
         var entry = new Highscore
         {
-            UserName = UserName,
+            UserName = firstUser ? UserName : UserName2,
             Date = DateTime.Now,
             SnakeLength = snake.TailLength,
             FrameCount = frameCount

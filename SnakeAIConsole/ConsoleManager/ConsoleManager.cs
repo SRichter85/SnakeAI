@@ -33,7 +33,7 @@ public class ConsoleManager : ThreadedManager
         var game = new GameView(new Point(Menu.BottomRight.X + 1, 1), Game);
         _areas.Add(game);
 
-        var status = new GameStatusView(this, new Point(1, game.BottomRight.Y - 6), 38);
+        var status = new GameStatusView(this, new Point(1, game.BottomRight.Y - 10), 38);
         _areas.Add(status);
 
         Highscore = new HighscoreView(Configuration, 1, game.BottomRight.Y + 1, game.BottomRight.X - 1);

@@ -1,8 +1,11 @@
 ﻿using SnakeAICore;
+using System.Xml.Linq;
 
 namespace SnakeAIConsole;
 
 public class ControlManager : ThreadedManager {
+
+    private Snake?[] playerSnakes = new Snake?[2];
 
     public ControlManager(SnakeAiConfiguration configuration) {
         Configuration = configuration;
@@ -13,6 +16,30 @@ public class ControlManager : ThreadedManager {
     public Game Game => Configuration.Game;
 
     public ConsoleManager ConsoleManager => Configuration.Console;
+
+    internal void ActivateSnake(int playerId, Snake snake)
+    {
+        if (playerId < 0 || playerId > 1) return;
+        playerSnakes[playerId] = snake;
+    }
+
+    internal void DeactivateSnake(int playerId)
+    {
+        if (playerId < 0 || playerId > 1) return;
+        var snake = playerSnakes[playerId];
+        if (snake != null) Game.Snakes.DeactiveSnake(snake);
+        playerSnakes[playerId] = null;
+    }
+
+    internal int GetPlayerId(Snake snake)
+    {
+        for (int idx = 0; idx < playerSnakes.Length; idx++)
+        {
+            if(playerSnakes[idx] == snake) return idx;
+        }
+
+        return -1;
+    }
 
     protected override void Setup() {
     }
@@ -25,11 +52,17 @@ public class ControlManager : ThreadedManager {
         switch (keyPressed.Key) {
             case ConsoleKey.A:
             case ConsoleKey.LeftArrow:
-                Game.Snake.TurnLeft();
+                playerSnakes[0]?.TurnLeft();
                 break;
             case ConsoleKey.D:
             case ConsoleKey.RightArrow:
-                Game.Snake.TurnRight();
+                playerSnakes[0]?.TurnRight();
+                break;
+            case ConsoleKey.I:
+                playerSnakes[1]?.TurnLeft();
+                break;
+            case ConsoleKey.P:
+                playerSnakes[1]?.TurnRight();
                 break;
             case ConsoleKey.S:
             case ConsoleKey.DownArrow:
@@ -44,4 +77,5 @@ public class ControlManager : ThreadedManager {
                 break;
         }
     }
+
 }

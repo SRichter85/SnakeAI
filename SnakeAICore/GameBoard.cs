@@ -63,17 +63,12 @@ public class GameBoard
     /// <returns>true, if there is an object on this position. false otherwise</returns>
     private bool IsPointOccupied(Point point)
     {
-        var snake = Game.Snake;
-        if(snake != null)
-        {
-            if (point == Game.Snake.Head) return true;
-
-            var tails = Game.Snake.Tails;
-            if (tails.Any(x => x == point)) return true;
-        }
 
         var foods = Game.Food;
-        if(foods.Any(x => x.Position == point)) return true;
+        if (foods.Any(x => x.Position == point)) return true;
+
+        if (Game.Snakes == null) return false;
+        if (Game.Snakes.ContainsPoint(point)) return true;
 
         return false;
     }
