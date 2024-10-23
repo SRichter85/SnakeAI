@@ -141,14 +141,10 @@ public class MenuView : ConsoleArea
         }
         else
         {
-            var snake = Game.Snakes.ActivateSnake();
-            if (snake != null)
-            {
-                Configuration.Control.ActivateSnake(playerId, snake);
-                _isPlayerActive[playerId] = true;
-                item.DisplayText = $"Deaktiviere Spieler {playerId + 1}";
-                item.ForceRefresh();
-            }
+            Configuration.Control.ActivateSnake(playerId);
+            _isPlayerActive[playerId] = true;
+            item.DisplayText = $"Deaktiviere Spieler {playerId + 1}";
+            item.ForceRefresh();
         }
     }
 }

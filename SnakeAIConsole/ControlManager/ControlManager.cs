@@ -5,7 +5,7 @@ namespace SnakeAIConsole;
 
 public class ControlManager : ThreadedManager {
 
-    private Snake?[] playerSnakes = new Snake?[2];
+    private Snake?[] _playerSnakes = new Snake?[2];
 
     public ControlManager(SnakeAiConfiguration configuration) {
         Configuration = configuration;
@@ -17,25 +17,28 @@ public class ControlManager : ThreadedManager {
 
     public ConsoleManager ConsoleManager => Configuration.Console;
 
-    internal void ActivateSnake(int playerId, Snake snake)
+    internal void ActivateSnake(int playerId)
     {
         if (playerId < 0 || playerId > 1) return;
-        playerSnakes[playerId] = snake;
+        var snake = Game.Snakes.Get(playerId);
+        snake.IsActive = true;
+        _playerSnakes[playerId] = snake;
     }
 
     internal void DeactivateSnake(int playerId)
     {
         if (playerId < 0 || playerId > 1) return;
-        var snake = playerSnakes[playerId];
-        if (snake != null) Game.Snakes.DeactiveSnake(snake);
-        playerSnakes[playerId] = null;
+
+        var snake = _playerSnakes[playerId];
+        _playerSnakes[playerId] = null;
+        if (snake != null) snake.IsActive = false;
     }
 
     internal int GetPlayerId(Snake snake)
     {
-        for (int idx = 0; idx < playerSnakes.Length; idx++)
+        for (int idx = 0; idx < _playerSnakes.Length; idx++)
         {
-            if(playerSnakes[idx] == snake) return idx;
+            if(_playerSnakes[idx] == snake) return idx;
         }
 
         return -1;
@@ -52,17 +55,17 @@ public class ControlManager : ThreadedManager {
         switch (keyPressed.Key) {
             case ConsoleKey.A:
             case ConsoleKey.LeftArrow:
-                playerSnakes[0]?.TurnLeft();
+                _playerSnakes[0]?.TurnLeft();
                 break;
             case ConsoleKey.D:
             case ConsoleKey.RightArrow:
-                playerSnakes[0]?.TurnRight();
+                _playerSnakes[0]?.TurnRight();
                 break;
             case ConsoleKey.I:
-                playerSnakes[1]?.TurnLeft();
+                _playerSnakes[1]?.TurnLeft();
                 break;
             case ConsoleKey.P:
-                playerSnakes[1]?.TurnRight();
+                _playerSnakes[1]?.TurnRight();
                 break;
             case ConsoleKey.S:
             case ConsoleKey.DownArrow:

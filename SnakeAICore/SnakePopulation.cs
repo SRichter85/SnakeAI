@@ -21,20 +21,12 @@ namespace SnakeAICore
         }
 
         public IEnumerable<Snake> Snakes { get { return _snakes; } }
-        /// <summary>
-        /// Activates the first available Snake and returns it. Returns null, if no snakes are available.
-        /// </summary>
-        /// <returns></returns>
-        public Snake? ActivateSnake()
-        {
-            var snake = _snakes.FirstOrDefault(x => !x.IsActive);
-            if(snake != null) snake.IsActive = true;
-            return snake;
-        }
 
-        public void DeactiveSnake(Snake snake)
+        public Snake Get(int snakeId)
         {
-            snake.IsActive = false;
+            if(snakeId >= _snakes.Length || snakeId < 0) throw new ArgumentOutOfRangeException(nameof(snakeId));
+
+            return _snakes[snakeId];
         }
 
         /// <summary>

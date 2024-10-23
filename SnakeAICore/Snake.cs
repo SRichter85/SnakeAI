@@ -50,7 +50,7 @@ namespace SnakeAICore
 
         public int TailLength { get; private set; } = 0;
 
-        public bool IsActive { get; internal set; } = false;
+        public bool IsActive { get; set; } = false;
 
         public void TurnLeft() => _signalDirectionChange = DirectionChange.Left;
 
