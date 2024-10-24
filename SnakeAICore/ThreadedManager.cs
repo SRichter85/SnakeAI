@@ -187,6 +187,8 @@ public abstract class ThreadedManager : IThreadedManager
             UpdateMeasurementFps(stopwatch.ElapsedTicks);
             FrameCount++;
             stopwatch.Restart();
+
+            // note
         }
 
         IsRunning = false;
