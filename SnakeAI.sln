@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeAICore", "SnakeAICore\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleGui", "ConsoleGui\ConsoleGui.csproj", "{40075608-5382-4586-97CC-98F3CF74967E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEST_ConsolePrototypes", "TEST_ConsolePrototypes\TEST_ConsolePrototypes.csproj", "{C39E7A70-9B27-412D-B605-271D764ECD31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{40075608-5382-4586-97CC-98F3CF74967E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40075608-5382-4586-97CC-98F3CF74967E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40075608-5382-4586-97CC-98F3CF74967E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C39E7A70-9B27-412D-B605-271D764ECD31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C39E7A70-9B27-412D-B605-271D764ECD31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C39E7A70-9B27-412D-B605-271D764ECD31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C39E7A70-9B27-412D-B605-271D764ECD31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
