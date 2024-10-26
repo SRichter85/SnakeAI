@@ -8,4 +8,8 @@
     <BaseOutputPath>bin_Test</BaseOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SnakeAIConsole\SnakeAIConsole.csproj" />
+  </ItemGroup>
+
 </Project>

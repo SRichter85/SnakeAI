@@ -612,13 +612,13 @@ Der Spieler erhält zu wenig Feedback wenn sich der Zustand der Schlange ändert
 Spiele einen kurzen Sound ab wenn die Schlange ein Futter ist, oder stirbt. Dazu wurde eine neue Top-Level Komponente SoundManager erstellt, welche das Spiel überwacht und Sounds in gewissen Situationen abspielt:
 
 ```nomnoml
-[<abstract>ThreadedManager] <:-- [SoundManager|
+[<abstract>ThreadedManager] <:- [SoundManager|
   |
   + SoundManager(g : Game)
 ]
 
 [SoundManager] -> [SoundPlayer]
-[<note>Aus System.Windows.Extensions.dll] - [SoundPlayer]
+[<note>Aus System.Windows.Extensions.dll] -- [SoundPlayer]
 ```
 
 Die System.Media.SoundPlayer Klasse wird nicht selbst programmiert sondern von dem NuGet-Packet System.Windows.Extensions bereitgestellt.
