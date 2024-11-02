@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleGui\ConsoleGui.csproj" />
     <ProjectReference Include="..\SnakeAICore\SnakeAICore.csproj" />
   </ItemGroup>
 

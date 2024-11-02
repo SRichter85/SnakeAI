@@ -47,6 +47,7 @@ public class ConsoleManager : ThreadedManager
 
         Console.CursorVisible = false;
         SetFontSize(Configuration.Settings.FontSize);
+        Console.SetWindowPosition(0, 0);
     }
 
     public void SetFontSize(short fontSize)

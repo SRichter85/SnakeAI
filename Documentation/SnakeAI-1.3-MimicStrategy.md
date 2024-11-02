@@ -9,6 +9,11 @@ Es soll später möglich sein, mehrere unterschieddliche K.I. Modelle/Strategien
 
 Die MimicStrategy ist die Bezeichnung
 
+### Erweiterung des Spielzyklus
+
+Ein Spielzyklus bestand aus folgenden Schritten:
+![MimicStrategy Concept](mimicstrategyConcept.drawio.png)
+
 # ConsoleArea und -Window Erweiterung
 
 # Multipayer Modus
